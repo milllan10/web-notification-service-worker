@@ -2,6 +2,7 @@
 
 self.addEventListener('push', (event) => {
     const payload = event.data ? event.data.json() : {};
+    console.log('Payload',payload)
     const title = payload.title || 'New Notification';
     const body = payload.body || 'You have a new notification!';
     const options = {

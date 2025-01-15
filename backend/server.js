@@ -34,10 +34,17 @@ let subscriptions = [
       auth: 'i/aFEv+VW+baekJTtyhPEg=='
     }
   },
+  {
+    userId: 'e3736b90-fcc1-49a1-9a97-413d1652aea0',
+    endpoint: 'https://fcm.googleapis.com/fcm/send/eAYSHJSgSlM:APA91bE4Iy7NdvtUPuNfSkAIP1hFzzocoLQjlTQqrQCKvbChqPilGh851xi7ja74-_NW36AYy3oE1MqsKR2YglE6tT7oUIhI3SwPW1PZqwTLnsV1LOwmQYkY8xagHVQmKfeEWFbTVoo4',
+    expirationTime: null,
+    keys: {
+      p256dh: 'BAJUWKz3j2nf8o7zZpvr1XKNGfoLg2C2JVsrSO4w+SHQQsc5Ye0bp9pqDpjPF8V1Zr8S3GxwmFlR8NC6yqNjg1I=',
+      auth: 'fgaRCdW4xfZPh1iAGTQTlg=='
+    }
+  },
 ];
-
-// Handle preflight OPTIONS requests (for CORS)
-app.options('*', cors());  // This will allow preflight requests
+app.options('*', cors());
 
 // Route to handle subscriptions from frontend
 app.post('/subscribe', (req, res) => {
