@@ -18,7 +18,7 @@ function urlBase64ToUint8Array(base64String) {
 const App = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U'; // Same key as in backend
-
+  const admin = localStorage.getItem('admin');
   useEffect(() => {
     // Check if user is already subscribed by checking localStorage
     const userId = localStorage.getItem('userId');
@@ -134,10 +134,11 @@ const App = () => {
         <p>You are subscribed to notifications!</p>
       )}
       <div>
-          
+          {admin === 'YES' && 
           <button onClick={handleSendNotificationButtonClick}>
             Send Notification to All Users
           </button>
+          }
         </div>
     </div>
   );
