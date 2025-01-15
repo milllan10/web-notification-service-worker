@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = 5000;
 
-app.use(cors('http://localhost:3000/'));
+app.use(cors('https://web-notification-worker-frontend.vercel.app/'));
 app.use(bodyParser.json());
 
 const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U';

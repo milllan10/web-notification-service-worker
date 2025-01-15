@@ -84,7 +84,7 @@ const App = () => {
     localStorage.setItem('endpoint', subscription.endpoint);
   
     // Send this subscription data to your backend
-    await fetch('http://localhost:5000/subscribe', {
+    await fetch('https://web-notification-worker-backend.vercel.app/subscribe', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const App = () => {
     const message = 'You have a new notification!';
 
     try {
-      const response = await fetch('http://localhost:5000/send-notification-to-all', {
+      const response = await fetch('https://web-notification-worker-backend.vercel.app/send-notification-to-all', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
