@@ -17,7 +17,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState('');
   const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U'; // Use environment variable
-  const backendUrl = 'https://web-notification-worker-backend.vercel.app/'; // Use environment variable
+  const backendUrl = 'https://web-notification-worker-backend.vercel.app'; // Use environment variable
   const admin = localStorage.getItem('admin');
 
   useEffect(() => {
