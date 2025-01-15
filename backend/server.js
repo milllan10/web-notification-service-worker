@@ -43,6 +43,15 @@ let subscriptions = [
       auth: 'fgaRCdW4xfZPh1iAGTQTlg=='
     }
   },
+  {
+    userId: 'aaacd127-b348-4207-9861-cf62f101f797',
+    endpoint: 'https://fcm.googleapis.com/fcm/send/espjLdop5ns:APA91bEJMu7UFMOC53QdCtikUFfVMLbnECpM4x4caEwDn9b-rYCuGrOBjhDZ9nK6XS6fiG4r1-irBMjsHHoIpx_8xPY2M8JNPgDWrlqccOyhgVjYYxLv2qUpxdqx00i706_xGtjNwV_R',
+    expirationTime: null,
+    keys: {
+      p256dh: 'BAsRnJFTrwscEKROKQ2HDQrMAk2xsG4ruTBRDGT5/qxbiBx3MvATZvx7wZE0qXE+0DbJ933xl/0SNkeZ0fCP3As=',
+      auth: 'QtrH+usQ69N0YNUCKiByGg=='
+    }
+  },
 ];
 app.options('*', cors());
 
