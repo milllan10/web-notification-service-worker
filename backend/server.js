@@ -2,99 +2,111 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const webPush = require('web-push');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
+// Initialize the app
 const app = express();
 const port = 5000;
 
+// Set up MongoDB connection
+// Set up MongoDB connection
+mongoose.connect('mongodb+srv://milanhingu9987:Bpr5ZNzQ138elQMC@cluster0.gqudu.mongodb.net/web-notification')
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+// Define a subscription schema
+const subscriptionSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  endpoint: { type: String, required: true },
+  keys: {
+    p256dh: { type: String, required: false },
+    auth: { type: String, required: false },
+  },
+  expirationTime: { type: Date, default: null },
+});
+
+// Create and export the Subscription model
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
+
+// Set up CORS
 app.use(cors('https://web-notification-worker-frontend.vercel.app/'));
 app.use(bodyParser.json());
 
+// WebPush settings
 const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U';
 const privateVapidKey = 'VHrgOfWXZ1uF_HHYEF5TUURixCOJ5KyNPeLeTR4CPFs';
 
 webPush.setVapidDetails('mailto:milan@uni5.tech', publicVapidKey, privateVapidKey);
 
-// Array to store subscriptions (in production, this should be a database)
-let subscriptions = [
-  {
-    userId: 'ecb274d3-66f8-4310-a0e3-8ba276cd5571',
-    endpoint: 'https://fcm.googleapis.com/fcm/send/dsDo55l0GuI:APA91bEyFBPaKgBugPS69OLqLQ49yZMh8NyfXdbKpSpU8EtSuAxAvTJMLF1K0hXXglU5P3sHxzK4ZhrGoyKw1Gd3JdgmkD-X_dyzCyGvPbUGei9sVsgVrfd-76edxUzHhMg99vN5vMH-',
-    expirationTime: null,
-    keys: {
-      p256dh: 'BE3kUrNX1o/ZJ3BB78v20PnjTIHGaiBXju5IhsCT0+DbO3F5DY+nOlPv8fTLDsCFGNK5DGrS39g0dxnvWqzL6k0=',
-      auth: 'UZPnb3Qi8Cj3rkjzE5RxvQ=='
-    }
-  },
-  {
-    userId: '83414c58-4a72-45c3-94d0-bfb3afc5839b',
-    endpoint: 'https://updates.push.services.mozilla.com/wpush/v2/gAAAAABnh4Ni-BGp0pOStQOipxUDhCCSph8nERgmb8bbJEJU52l9pgJmBd3Y8Xt3IsPzhDxOUBUZpIidXo_HMq_Ynw4pruHwMNPDpyvRXjz-tbl-V5e4ywYg39KniTkbxfka39-_3I1YwR84iW-fE-oZJjGckITOIpTs3GUBoQYfUoN9w6RxNo4',
-    expirationTime: null,
-    keys: {
-      p256dh: 'BOdqL0n7UXg3Y90JFaybLqt3iLAOLYPs8YaGi1lR/zEzIin3UNQRPx/WF5478zPPe+JIhMozUDQzQFf1pO2EH4w=',
-      auth: 'i/aFEv+VW+baekJTtyhPEg=='
-    }
-  },
-  {
-    userId: 'e3736b90-fcc1-49a1-9a97-413d1652aea0',
-    endpoint: 'https://fcm.googleapis.com/fcm/send/eAYSHJSgSlM:APA91bE4Iy7NdvtUPuNfSkAIP1hFzzocoLQjlTQqrQCKvbChqPilGh851xi7ja74-_NW36AYy3oE1MqsKR2YglE6tT7oUIhI3SwPW1PZqwTLnsV1LOwmQYkY8xagHVQmKfeEWFbTVoo4',
-    expirationTime: null,
-    keys: {
-      p256dh: 'BAJUWKz3j2nf8o7zZpvr1XKNGfoLg2C2JVsrSO4w+SHQQsc5Ye0bp9pqDpjPF8V1Zr8S3GxwmFlR8NC6yqNjg1I=',
-      auth: 'fgaRCdW4xfZPh1iAGTQTlg=='
-    }
-  },
-  {
-    userId: 'aaacd127-b348-4207-9861-cf62f101f797',
-    endpoint: 'https://fcm.googleapis.com/fcm/send/espjLdop5ns:APA91bEJMu7UFMOC53QdCtikUFfVMLbnECpM4x4caEwDn9b-rYCuGrOBjhDZ9nK6XS6fiG4r1-irBMjsHHoIpx_8xPY2M8JNPgDWrlqccOyhgVjYYxLv2qUpxdqx00i706_xGtjNwV_R',
-    expirationTime: null,
-    keys: {
-      p256dh: 'BAsRnJFTrwscEKROKQ2HDQrMAk2xsG4ruTBRDGT5/qxbiBx3MvATZvx7wZE0qXE+0DbJ933xl/0SNkeZ0fCP3As=',
-      auth: 'QtrH+usQ69N0YNUCKiByGg=='
-    }
-  },
-];
+// CORS preflight request handling
 app.options('*', cors());
 
 // Route to handle subscriptions from frontend
-app.post('/subscribe', (req, res) => {
-    const { subscription, userId } = req.body;
-    if (!subscription || !userId) {
-        return res.status(400).json({ error: 'Subscription and userId are required' });
-    }
+app.post('/subscribe', async (req, res) => {
+  console.log(req.body)
+  const { subscription_send:subscription, userId } = req.body;
+  if (!subscription || !userId) {
+    return res.status(400).json({ error: 'Subscription and userId are required' });
+  }
 
-    // Store the subscription along with userId
-    subscriptions.push({ ...subscription, userId });
+  try {
+    // Save the subscription to MongoDB
+    const newSubscription = new Subscription({
+      userId,
+      endpoint: subscription.endpoint,
+      keys: {
+        p256dh: subscription.keys.p256dh,
+        auth: subscription.keys.auth,
+      },
+      expirationTime: subscription.expirationTime || null,
+    });
+
+    // Save the new subscription document
+    await newSubscription.save();
     console.log(`User subscribed: ${userId}`);
+
     res.status(201).json({ message: 'Subscription added' });
+  } catch (err) {
+    console.error('Error saving subscription:', err);
+    res.status(500).json({ error: 'Failed to save subscription' });
+  }
 });
 
 // Route to send notifications to all users
-app.post('/send-notification-to-all', (req, res) => {
-    const { title, message } = req.body;
+app.post('/send-notification-to-all', async (req, res) => {
+  const { title, message } = req.body;
 
-    if (!title || !message) {
-        return res.status(400).send('Title and message are required');
-    }
+  if (!title || !message) {
+    return res.status(400).send('Title and message are required');
+  }
 
-    console.log('Sending notifications to all users...');
+  console.log('Sending notifications to all users...');
+
+  try {
+    // Fetch all subscriptions from MongoDB
+    const subscriptions = await Subscription.find();
 
     // Loop through all subscriptions and send notifications
     const promises = subscriptions.map((subscription) => {
-        const payload = JSON.stringify({ title, body: message });
+      const payload = JSON.stringify({ title, body: message });
 
-        return webPush.sendNotification(subscription, payload)
-            .catch(err => {
-                console.error('Error sending notification:', err);
-                return null;
-            });
+      return webPush.sendNotification(subscription, payload)
+        .catch(err => {
+          console.error('Error sending notification:', err);
+          return null;
+        });
     });
 
     // Wait for all notifications to be sent
-    Promise.all(promises)
-        .then(() => res.status(200).send('Notifications sent successfully'))
-        .catch(err => res.status(500).send('Error sending notifications'));
+    await Promise.all(promises);
+    res.status(200).send('Notifications sent successfully');
+  } catch (err) {
+    console.error('Error sending notifications:', err);
+    res.status(500).send('Error sending notifications');
+  }
 });
 
+// Start the server
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
