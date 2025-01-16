@@ -28,9 +28,6 @@ const subscriptionSchema = new mongoose.Schema({
 // Create and export the Subscription model
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
-const cors = require('cors');
-
-// Allow requests from the frontend URL
 const allowedOrigins = ['https://web-notification-worker-frontend.vercel.app'];
 
 app.use(cors({
