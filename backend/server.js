@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Set up MongoDB connection
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://milanhingu9987:Bpr5ZNzQ138elQMC@cluster0.gqudu.mongodb.net/web-notification', {
-  useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => console.log('MongoDB connected'))
