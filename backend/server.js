@@ -28,9 +28,16 @@ const subscriptionSchema = new mongoose.Schema({
 // Create and export the Subscription model
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
-// Set up CORS
-app.use(cors('https://web-notification-worker-frontend.vercel.app/'));
-app.use(bodyParser.json());
+const cors = require('cors');
+
+// Allow requests from the frontend URL
+const allowedOrigins = ['https://web-notification-worker-frontend.vercel.app'];
+
+app.use(cors({
+  origin: allowedOrigins, // Add the frontend URL here
+  methods: ['GET', 'POST'], // Allow required HTTP methods
+}));
+
 
 // WebPush settings
 const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U';
