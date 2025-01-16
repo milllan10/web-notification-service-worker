@@ -46,10 +46,10 @@ app.use(cors({
 }));
 
 // WebPush settings
-const publicVapidKey = process.env.PUBLIC_VAPID_KEY || 'your_public_vapid_key_here';
-const privateVapidKey = process.env.PRIVATE_VAPID_KEY || 'your_private_vapid_key_here';
+const publicVapidKey = 'BIOOXS25u5s7CIKwFvWHTf-k9tJn3aQKVp3vbJRu_lQ1Vk_rsKfHyAXnvkRgkU92eCO8mZ-Z8qyZ_H3oqw3fY5U';
+const privateVapidKey = 'VHrgOfWXZ1uF_HHYEF5TUURixCOJ5KyNPeLeTR4CPFs';
 
-webPush.setVapidDetails('mailto:your_email@example.com', publicVapidKey, privateVapidKey);
+webPush.setVapidDetails('mailto:milan@uni5.tech', publicVapidKey, privateVapidKey);
 
 // Route to handle subscriptions
 app.post('/subscribe', async (req, res) => {
