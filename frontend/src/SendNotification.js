@@ -5,7 +5,8 @@ const SendNotification = () => {
   const [title, setTitle] = useState('Test');
   const [message, setMessage] = useState('Desctiption');
   const [loading, setLoading] = useState(false);
-  const backendUrl = 'http://localhost:5000';
+//   const backendUrl = 'http://localhost:5000';
+  const backendUrl = 'https://web-notification-worker-backend.vercel.app'; // Use environment variable
 
   const handleSendNotification = async () => {
     if (!title || !message) {
