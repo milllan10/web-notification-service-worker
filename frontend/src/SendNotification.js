@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './index.css'; // Import the CSS file
 
 const SendNotification = () => {
-  const [title, setTitle] = useState('Test');
-  const [message, setMessage] = useState('Desctiption');
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 //   const backendUrl = 'http://localhost:5000';
   const backendUrl = 'https://web-notification-worker-backend.vercel.app'; // Use environment variable
